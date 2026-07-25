@@ -1,0 +1,97 @@
+CREATE DATABASE EcommerceDB;
+USE EcommerceDB;
+SHOW DATABASES;
+SELECT DATABASE();
+CREATE TABLE Customers (
+	CustomerID INT AUTO_INCREMENT PRIMARY KEY,
+    FirstName VARCHAR(50) NOT NULL,
+    LastName VARCHAR(50) NOT NULL,
+    Email VARCHAR(100) NOT NULL UNIQUE,
+    Phone VARCHAR(15) NOT NULL,
+    City VARCHAR(50),
+    State VARCHAR(50),
+    RegistrationDate DATE NOT NULL
+);
+SHOW TABLES;
+DESCRIBE Customers;
+CREATE TABLE Categories (
+	CategoryID INT AUTO_INCREMENT PRIMARY KEY,
+    CategoryName VARCHAR(50) NOT NULL UNIQUE,
+    Description VARCHAR(200)
+);
+SHOW TABLES;
+DESCRIBE Categories;
+CREATE TABLE Suppliers (
+    SupplierID INT AUTO_INCREMENT PRIMARY KEY,
+    SupplierName VARCHAR(100) NOT NULL,
+    ContactPerson VARCHAR(100),
+    Phone VARCHAR(15) NOT NULL,
+    Email VARCHAR(100) UNIQUE,
+    City VARCHAR(50),
+    State VARCHAR(50)
+);
+SHOW TABLES;
+DESCRIBE Suppliers;
+CREATE TABLE Products (
+	ProductID INT AUTO_INCREMENT PRIMARY KEY,
+    ProductName VARCHAR(50) NOT NULL,
+    CategoryID INT NOT NULL ,
+    SupplierID INT NOT NULL ,
+    Brand VARCHAR(50),
+    Price DECIMAL(10,2) NOT NULL,
+    Stock INT NOT NULL DEFAULT 0,
+    Description VARCHAR(255),
+    FOREIGN KEY (CategoryID)
+        REFERENCES Categories(CategoryID),
+
+    FOREIGN KEY (SupplierID)
+        REFERENCES Suppliers(SupplierID)
+);
+SHOW TABLES;
+DESCRIBE Products;
+CREATE TABLE Orders (
+	OrderID INT AUTO_INCREMENT PRIMARY KEY,
+    CustomerID INT NOT NULL,
+    OrderDate DATE NOT NULL,
+    TotalAmount DECIMAL(10,2) NOT NULL,
+    OrderStatus VARCHAR(30) NOT NULL,
+    FOREIGN KEY (CustomerID)
+		REFERENCES Customers(CustomerID)
+);
+SHOW TABLES;
+DESCRIBE Orders;
+CREATE TABLE OrderDetails (
+    OrderDetailID INT AUTO_INCREMENT PRIMARY KEY,
+	OrderID INT NOT NULL,
+	ProductID INT NOT NULL,
+	Quantity INT NOT NULL,
+	UnitPrice DECIMAL(10,2) NOT NULL,
+	FOREIGN KEY (OrderID)
+	REFERENCES Orders(OrderID),
+	FOREIGN KEY (ProductID)
+	REFERENCES Products(ProductID)
+);
+SHOW TABLES;
+DESCRIBE OrderDetails;
+
+CREATE TABLE Payments (
+    PaymentID INT AUTO_INCREMENT PRIMARY KEY,
+    OrderID INT NOT NULL,
+    PaymentDate DATE NOT NULL,
+    PaymentMethod VARCHAR(30) NOT NULL,
+    PaymentStatus VARCHAR(30) NOT NULL,
+    Amount DECIMAL(10,2) NOT NULL,
+
+    FOREIGN KEY (OrderID)
+    REFERENCES Orders(OrderID)
+);
+
+SHOW TABLES;
+DESCRIBE Payments;
+
+
+
+    
+    
+
+
